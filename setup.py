@@ -2,7 +2,7 @@ from setuptools import setup
 setup(
   name = 'pyiss',
   packages = ['pyiss'], # this must be the same as the name above
-  install_requires = ['requests', 'httmock'],
+  install_requires = ['requests', 'httmock', 'voluptuous'],
   version = '1.0',
   description = 'a simple python3 library for info about the current '
                 'International Space Station location',
