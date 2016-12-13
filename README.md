@@ -1,10 +1,7 @@
 PyIss 
-===================
-
-
 [![Coverage Status](https://coveralls.io/repos/github/HydrelioxGitHub/pyiss/badge.svg)](https://coveralls.io/github/HydrelioxGitHub/pyiss)
-
 [![Build Status](https://travis-ci.org/HydrelioxGitHub/pyiss.svg?branch=master)](https://travis-ci.org/HydrelioxGitHub/pyiss)
+===================
 
 ![ISS](https://upload.wikimedia.org/wikipedia/commons/8/88/ISS_after_STS-118_%28computer_rendering_of_August_2006%29.png)
 
