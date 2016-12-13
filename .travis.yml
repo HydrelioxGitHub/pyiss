@@ -8,6 +8,6 @@ install:
   - pip install -r requirements.txt
   - pip install coveralls
 script:
-  coverage run --source=pyiss nosetests -v
+  nosetests -v --with-coverage --cover-package=pyiss
 after_success:
   coveralls
