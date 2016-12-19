@@ -14,7 +14,9 @@ class ISS(object):
         return
 
     def people_in_space(self):
-        """Number of people onboard of the ISS.
+        """Number of people in space.
+        Be aware that does not mean these people are inside the ISS (it does
+        most of the time), They can be travelling to and from the station.
 
         :return: Return a dict with number of people in space right now and
         their name and their craft
