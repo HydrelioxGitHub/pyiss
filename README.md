@@ -34,9 +34,16 @@ To use ``pyiss``, just import it in your project like so::
 Afterwards, you can have access to ISS location::
 
     >>> station = pyiss.ISS()
-    >>> print (station.current_location())
+    >>> print(station.current_location())
     {'longitude': '133.6864', 'latitude': '51.4806'}
 
+Other details::
+
+    >>> print(station.pass_times(1, 1))
+    >>> print(station.number_of_people_in_space())
+    >>> print(station.seconds_before_next_rise(-50.2322, 76.5668))
+    >>> print(station.is_ISS_above(4,71, 7))
+    >>> print(station.next_rise(2, 5, 6).timestamp())
 
 That's it!
 

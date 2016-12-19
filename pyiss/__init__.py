@@ -3,11 +3,8 @@ import requests
 from voluptuous import Schema, Required, All, Any, Length, Range
 
 
-class ISS:
-    """
-
-    """
-
+class ISS(object):
+    """Representation of the ISS details."""
     API_URL = "http://api.open-notify.org/"
     API_CURRENT_LOCATION = "iss-now.json"
     API_PASS_TIMES = "iss-pass.json"
@@ -17,35 +14,36 @@ class ISS:
         return
 
     def people_in_space(self):
-        """
+        """Number of people onboard of the ISS.
+
         :return: Return a dict with number of people in space right now and
         their name and their craft
         :rtype: dict
         """
-        data = requests.get(self.API_URL + self.API_PEOPLE)
+        data = requests.get('{}{}'.format(self.API_URL, self.API_PEOPLE),
+                            timeout=5)
 
         if data.status_code is 200:
             return data.json()
         else:
-            raise Exception("Error server n {}".format(
-                data.status_code))
+            raise Exception("Error server n {}".format(data.status_code))
 
     def current_location(self):
-        """
+        """Current location of the ISS.
 
         :return: A dict with latitude and longitude of ISS
         :rtype: dict
         """
-        data = requests.get(self.API_URL + self.API_CURRENT_LOCATION)
+        data = requests.get('{}{}'.format(
+            self.API_URL, self.API_CURRENT_LOCATION), timeout=5)
 
         if data.status_code is 200:
             return data.json()['iss_position']
         else:
-            raise Exception("Error server n {}".format(
-                data.status_code))
+            raise Exception("Error server n {}".format(data.status_code))
 
     def pass_times(self, latitude, longitude, altitude=None, number=None):
-        """
+        """The next pass times of the ISS.
 
         :param latitude: latitude in degrees of location you want iss pass
         above
@@ -63,7 +61,6 @@ class ISS:
         the duration
         :rtype: list
         """
-
         # Check input
         schema = Schema({
             Required('lat'): All(Any(int, float), Range(min=-80, max=80)),
@@ -71,9 +68,11 @@ class ISS:
             'alt': Any(None, All(Any(int, float), Range(min=0, max=10000))),
             'number': Any(None, All(int, Range(min=1, max=100)))
         })
-        schema({'lat' : latitude, 'long': longitude, 'alt' : altitude, 'number': number})
+        schema({
+            'lat' : latitude, 'long': longitude, 'alt' : altitude,
+            'number': number})
 
-        #Build request
+        # Build request
         payload = {'lat': latitude, 'lon': longitude}
 
         if altitude is not None:
@@ -82,25 +81,25 @@ class ISS:
         if number is not None:
             payload['n'] = number
 
-        data = requests.get(self.API_URL + self.API_PASS_TIMES,
-                            params=payload)
+        data = requests.get('{}{}'.format(self.API_URL, self.API_PASS_TIMES),
+                            params=payload, timeout=5)
 
-        #Check error
+        # Check error
         if data.status_code is 200:
             return data.json()['response']
         else:
-            raise Exception("Error server n {}".format(
-                data.status_code))
+            raise Exception("Error server n {}".format(data.status_code))
 
     def number_of_people_in_space(self):
-        """
+        """The number of people onboard the ISS at the moment.
+
         :return: The number of people in space right now
         :rtype: int
         """
         return self.people_in_space()['number']
 
     def next_rise(self, latitude, longitude, altitude=None):
-        """
+        """The next rise of the ISS.
 
         :param latitude: latitude in degrees of location you want iss pass
         above
@@ -122,7 +121,7 @@ class ISS:
         return datetime.fromtimestamp(timestamp)
 
     def is_ISS_above(self, latitude, longitude, altitude=None):
-        """
+        """Location of the ISS regardin the current location.
 
         :param latitude: latitude in degrees of location you want iss pass
         above
@@ -141,14 +140,5 @@ class ISS:
         # above the location
         return len(test) is 1
 
-
 if __name__ == '__main__':
     iss = ISS()
-    # print (type(iss.people_in_space()))
-    # print(iss.current_location())
-    # print (type(iss.pass_times(5, 8)))
-    #print(iss.pass_times(1,1))
-    # print (iss.number_of_people_in_space())
-    # print (iss.seconds_before_next_rise(-50.2322, 76.5668))
-    # print (iss.is_ISS_above(4,71,7 ))
-    print(iss.next_rise(2, 5, 6).timestamp())
