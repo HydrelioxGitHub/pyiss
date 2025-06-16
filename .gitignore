@@ -1,0 +1,4 @@
+build/*
+dist/*
+pyiss.egg-info/*
+pyiss/__pycache__/*

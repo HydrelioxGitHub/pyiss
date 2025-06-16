@@ -23,9 +23,9 @@ class ISS(object):
         :rtype: dict
         """
         data = requests.get('{}{}'.format(self.API_URL, self.API_PEOPLE),
-                            timeout=5)
+                            timeout=10)
 
-        if data.status_code is 200:
+        if data.status_code == 200:
             return data.json()
         else:
             raise Exception("Error server n {}".format(data.status_code))
@@ -37,9 +37,9 @@ class ISS(object):
         :rtype: dict
         """
         data = requests.get('{}{}'.format(
-            self.API_URL, self.API_CURRENT_LOCATION), timeout=5)
+            self.API_URL, self.API_CURRENT_LOCATION), timeout=10)
 
-        if data.status_code is 200:
+        if data.status_code == 200:
             return data.json()['iss_position']
         else:
             raise Exception("Error server n {}".format(data.status_code))
@@ -77,17 +77,17 @@ class ISS(object):
         # Build request
         payload = {'lat': latitude, 'lon': longitude}
 
-        if altitude is not None:
+        if altitude != None:
             payload['alt'] = altitude
 
-        if number is not None:
+        if number != None:
             payload['n'] = number
 
         data = requests.get('{}{}'.format(self.API_URL, self.API_PASS_TIMES),
-                            params=payload, timeout=5)
+                            params=payload, timeout=10)
 
         # Check error
-        if data.status_code is 200:
+        if data.status_code == 200:
             return data.json()['response']
         else:
             raise Exception("Error server n {}".format(data.status_code))
@@ -140,7 +140,7 @@ class ISS(object):
         test = self.pass_times(latitude, longitude, altitude, 2)
         # 2 results where asked so if API return only 1, that mean ISS is
         # above the location
-        return len(test) is 1
+        return len(test) == 1
 
 if __name__ == '__main__':
     iss = ISS()
